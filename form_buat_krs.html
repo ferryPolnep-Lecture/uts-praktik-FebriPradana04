@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Tambah KRS</title>
+    <script>
+        function validateForm() {
+            const nama_mahasiswa = document.forms[krsForm]["nama_mahasiswa"].value;
+            const nim = document.forms[krsForm]["nim"].value;
+            const kelas = document.forms[krsForm]["kelas"].value;
+            const mataKuliah = document.forms[krsForm]["mata_kuliah[]"];
+
+            const namePattern = /^[a-zA-Z\s]+$/;
+            if (!namePattern.test(nama_mahasiswa)) {
+                alert("Nama hanya boleh berisi huruf.");
+                return false;
+            }
+
+            const nimPattern = /^\d{10}$/;;
+            if (!nimPattern.test(nim)) {
+                alert("NIM hanya boleh berisi angka dan panjangnya harus 10 digit.");
+                return false;
+            }
+
+            const validClasses = ['5A', '5B', '5C', '5D', '5E'];
+            if (!validClasses.includes(kelas)) {
+                alert("Kelas hanya diisi dengan satu pilihan(5A, 5B, 5C, 5D, 5E).");
+                return false;
+            }
+
+            const selectedMataKuliah = Array.from(mataKuliah).filter(item => item.checked);
+            if (selectedMataKuliah.length === 0) {
+                alert("Pilih setidaknya satu atau lebih mata kuliah.");
+                return false;
+            }
+
+            return true;
+        }  
+    </script>
 </head>
+
 <body>
-    <form action="create_krs.php" method="post">
-        <label for="name">Nama Mahasiswa: </label><br>
-        <input type="text" name="name"><br>
+    <h2>Form Tambah KRS</h2>
+    <form name="krsForm" action="create_krs.php" method="post" onsubmit="return validateForm()">
+        <label for="Nama">Nama Mahasiswa: </label><br>
+        <input type="text" name="nama_mahasiswa" required><br><br>
         <label for="nim">Nomor Induk Mahasiswa: </label><br>
-        <input type="text" name="nim"><br>
+        <input type="text" name="nim" required><br><br>
         <label for="kelas">Kelas: </label><br>
         <input type="radio" name="kelas" value="5A">Kelas 5A<br>
         <input type="radio" name="kelas" value="5B">Kelas 5B<br>
@@ -26,4 +63,5 @@
         <input type="submit" value="Simpan KRS">
     </form>
 </body>
+
 </html>
